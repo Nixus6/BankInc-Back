@@ -3,7 +3,6 @@ package com.bankinc.credibanco.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -21,7 +20,6 @@ import com.bankinc.credibanco.response.AuthResponse;
 import com.irojas.demojwt.User.Role;
 import com.irojas.demojwt.User.User;
 import com.irojas.demojwt.User.UserRepository;*/
-import com.bankinc.credibanco.response.CardResponseRest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,16 +32,24 @@ public class AuthService {
     private final JwtService jwtService ;
     private final PasswordEncoder passwordEncoder ;
     private final AuthenticationManager authenticationManager;
-
+    
+    //TODO:Validar errorres
     public AuthResponse login(LoginRequest request){
     	String token="";
+    	UserDetails user = null;
+    	try {
     	UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
     			request.getUsername(), request.getPassword());
     	authenticationManager.authenticate(authenticationToken);
-    	UserDetails user=userRepository.findByUsername(request.getUsername())
+    	user=userRepository.findByUsername(request.getUsername())
     			.orElseThrow(()->new RuntimeException("User not found"));
     	token=jwtService.getToken(user);
+    	}catch (AuthenticationException e) {
+			// TODO: handle exception
+    		log.error("Error en la autenticacion ", e);
+		}
     	return AuthResponse.builder()
+    			.user(user)
     			.token(token)
     			.build();
     }
