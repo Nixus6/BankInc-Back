@@ -14,6 +14,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,8 @@ public class User implements UserDetails {
     String password;
     @Enumerated(EnumType.STRING) 
     Role role;
+    @OneToMany()
+    List<Tarjet> Tarjets; 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
