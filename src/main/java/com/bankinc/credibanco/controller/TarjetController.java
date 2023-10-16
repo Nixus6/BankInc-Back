@@ -1,5 +1,7 @@
 package com.bankinc.credibanco.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +22,18 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/v1")
 @RequiredArgsConstructor
 public class TarjetController {
+	private static final Logger log=LoggerFactory.getLogger(CardController.class);
 	private final TarjetService tarjetService;
 	
-    /*@GetMapping("/tarjets/{id}")
-    public ResponseEntity<TarjetResponse> login(@PathVariable Integer id)
+    @GetMapping("/tarjets/{id}")
+    public ResponseEntity<TarjetResponse> getTarjetByIdTitular(@PathVariable Integer id)
     { 
+    	log.info("entro tarjets id: ");
         return ResponseEntity.ok(tarjetService.getCardsById(id));
-    }*/
+    }
     
-    @PostMapping(value = "targets")
-    public ResponseEntity<TarjetResponse> login(@RequestBody TarjetRequest request)
+    @PostMapping(value = "tarjets")
+    public ResponseEntity<TarjetResponse> createTarjet(@RequestBody TarjetRequest request)
     { 
         return ResponseEntity.ok(tarjetService.createTarjet(request));
     }
