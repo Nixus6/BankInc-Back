@@ -1,5 +1,7 @@
 package com.bankinc.credibanco.request;
 
+
+import com.bankinc.credibanco.model.Tarjet;
 import com.bankinc.credibanco.model.User;
 
 import lombok.AllArgsConstructor;
@@ -11,9 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TarjetRequest {
-	
-	String typeTarjet;
-	User user;
-	Integer saldo;
+public class TransactionRequest {
+	Integer totalPrice;
+	User user_id; 
+	Tarjet tarjet_id;
 }

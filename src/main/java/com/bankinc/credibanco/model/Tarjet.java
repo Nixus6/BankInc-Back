@@ -32,27 +32,27 @@ import lombok.Setter;
 @Setter
 @Data
 @Builder
-@Table(name="tarjet", uniqueConstraints = {@UniqueConstraint(columnNames = {"idProducto"})})
-public class Tarjet implements Serializable{
+@Table(name = "tarjet", uniqueConstraints = { @UniqueConstraint(columnNames = { "idProducto" }) })
+public class Tarjet implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer id;
 	@Basic
-    @Column(nullable = false)
+	@Column(nullable = false)
 	Long idProducto;
-    Integer saldo;
-    Integer cupo;
-    Calendar fechaVencimiento;
-    @Enumerated(EnumType.STRING) 
-    TypeTarjet typeTarget;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "titular_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    User titular;
+	Integer saldo;
+	Integer cupo;
+	Calendar fechaVencimiento;
+	@Enumerated(EnumType.STRING)
+	TypeTarjet typeTarget;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "titular_id", nullable = false)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	User titular;
 }

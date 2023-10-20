@@ -3,6 +3,7 @@ package com.bankinc.credibanco.service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -27,6 +28,11 @@ public class TarjetService {
 	private final ITarjetDao tarjetDao;
 	private final IUserDao userDao;
 
+	/// <summary>
+	/// Obtener todas las trajetas ligadas al usuario logeado
+	/// </summary>
+	/// <param name="idUser"></param>
+	/// <returns></returns>
 	public TarjetResponse getCardsById(Integer idUser) {
 		log.info("entro getCardsById: ");
 		User getUser = userDao.findById(idUser).get();
@@ -34,9 +40,15 @@ public class TarjetService {
 		return TarjetResponse.builder().tarjet(tarjet).build();
 	}
 
+	/// <summary>
+	/// Crear una nueva tarjeta
+	/// </summary>
+	/// <param name="request"></param>
+	/// <returns></returns>
 	public TarjetResponse createTarjet(TarjetRequest request) {
-		List<Tarjet> list = new ArrayList<>();
+		// TODO:evaluar campos que vienen vacios
 		log.info("request.getTypeTarjet() " + request.getTypeTarjet());
+		List<Tarjet> list = new ArrayList<>();
 		Random numAleatorio = new Random();
 		Calendar date = Calendar.getInstance();
 		date.add(Calendar.YEAR, 3);
@@ -48,14 +60,36 @@ public class TarjetService {
 				.cupo(request.getTypeTarjet().equals("credit") ? 1000 : 0).fechaVencimiento(date)
 				.typeTarget(request.getTypeTarjet().equals("debit") ? TypeTarjet.DEBIT : TypeTarjet.CREDIT)
 				.titular(request.getUser()).build();
-		tarjetDao.save(tarjet);
+		//Tarjet tarjetSave = 
+				tarjetDao.save(tarjet);
+		/*
+		 * if( tarjetSave != null ) { list.add(tarjetSave); }
+		 */
 		return TarjetResponse.builder().tarjet(list).build();
 	}
-
-	/*
-	 * public updateBalance() {
-	 * 
-	 * }
-	 */
+	
+	/// <summary>
+	/// Actualizar saldo de la tarjeta
+	/// </summary>
+	/// <param name="tarjet"></param>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	public TarjetResponse updateBalance(TarjetRequest tarjet, Integer id) {
+		List<Tarjet> list = new ArrayList<>();
+		try {
+			Optional<Tarjet> tarjetUpdate = tarjetDao.findById(id);
+			log.info("tarjetUpdate " + tarjetUpdate);
+			if (tarjetUpdate.isPresent()) {
+				tarjetUpdate.get().setSaldo(tarjet.getSaldo());
+				Tarjet tarjetSave = tarjetDao.save(tarjetUpdate.get());
+				 if( tarjetSave != null ) {
+					 list.add(tarjetSave);
+				 }
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return TarjetResponse.builder().tarjet(list).build();
+	  }
 
 }
