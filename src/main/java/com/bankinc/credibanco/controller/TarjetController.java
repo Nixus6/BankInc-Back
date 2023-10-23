@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bankinc.credibanco.request.TarjetRequest;
+import com.bankinc.credibanco.request.TarjetValidateCardRequest;
 import com.bankinc.credibanco.response.TarjetResponse;
+import com.bankinc.credibanco.response.TarjetValidateResponse;
 import com.bankinc.credibanco.service.TarjetService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,4 +45,10 @@ public class TarjetController {
 	public ResponseEntity<TarjetResponse> updateBalance (@RequestBody TarjetRequest request, @PathVariable Integer id) {
 		return ResponseEntity.ok(tarjetService.updateBalance(request,id));
 	}
+	
+    @PostMapping(value = "validate")
+    public ResponseEntity<TarjetValidateResponse> validateCard(@RequestBody TarjetValidateCardRequest request)
+    { 
+        return ResponseEntity.ok(tarjetService.validateCard(request));
+    }
 }

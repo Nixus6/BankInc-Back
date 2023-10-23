@@ -9,4 +9,5 @@ import com.bankinc.credibanco.model.User;
 
 public interface ITarjetDao extends JpaRepository<Tarjet,Integer> {
 	List<Tarjet> findByTitular(User titular); 
+	Tarjet findByIdProducto(Long idProducto);
 }

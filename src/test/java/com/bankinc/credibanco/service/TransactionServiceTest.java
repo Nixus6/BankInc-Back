@@ -51,7 +51,6 @@ public class TransactionServiceTest {
 	@BeforeEach
 	void setup() {
 		transactionReq = TransactionRequest.builder().totalPrice(1000).user_id(user).tarjet_id(tarjet).build();
-
 	}
 	
 
@@ -59,15 +58,16 @@ public class TransactionServiceTest {
 	@DisplayName("Test para guardar una transaccion")
 	void testSaveTransaction() {
 	
-		transaction = Transaction.builder().totalPrice(transactionReq.getTotalPrice())
-				.state(TransactionState.SUCCESSFUL).fechaTransaccion(date).usuario(transactionReq.getUser_id())
-				.tarjet(transactionReq.getTarjet_id()).build();
 		// given
 		/*
 		 * given(transactionDao.findByUsuario(transaction.getUsuario()))
 		 * .willReturn(Optional.empty());
 		 */
 		//given(transactionDao.save(transaction)).willReturn(transaction);
+		transaction = Transaction.builder().totalPrice(transactionReq.getTotalPrice())
+				.state(TransactionState.SUCCESSFUL).fechaTransaccion(date).usuario(transactionReq.getUser_id())
+				.tarjet(transactionReq.getTarjet_id()).build();
+		
 		lenient().when(transactionDao.save(transaction)).thenReturn(transaction);
 		
 		// when
